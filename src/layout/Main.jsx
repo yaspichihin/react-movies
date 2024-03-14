@@ -8,7 +8,9 @@ class Main extends Component {
     }
 
     componentDidMount() {
-        fetch('http://www.omdbapi.com/?apikey=2bd2651c&s=matrix')
+        const token = process.env.REACT_APP_OMDB_TOKEN
+
+        fetch(`http://www.omdbapi.com/?apikey=${token}&s=matrix`)
             .then(response => response.json())
             .then(data => this.setState({movies: data.Search}))
         

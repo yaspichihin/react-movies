@@ -14,9 +14,13 @@ class Main extends Component {
 
     fn_search_movies = (value, type = 'all') => {
         this.setState({isLoading: true})
-        fetch(`http://www.omdbapi.com/?apikey=${this.token}&s=${value}${type === 'all' ? '' : `&type=${type}`}`)
+        fetch(`https://www.omdbapi.com/?apikey=${this.token}&s=${value}${type === 'all' ? '' : `&type=${type}`}`)
             .then(response => response.json())
-            .then(data => this.setState({ movies: data.Search || [], isLoading: false}))
+            .then(data => this.setState({ movies: data.Search || [], isLoading: false }))
+            .catch((err) => {
+                console.error(err);
+                this.setState({isLoading: false})
+            })
     }
 
     render() {

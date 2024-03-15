@@ -8,31 +8,24 @@ class Main extends Component {
     token = process.env.REACT_APP_OMDB_TOKEN
 
     state = {
-        movies: []
+        movies: [],
+        isLoading: false
     }
 
     fn_search_movies = (value, type = 'all') => {
+        this.setState({isLoading: true})
         fetch(`http://www.omdbapi.com/?apikey=${this.token}&s=${value}${type === 'all' ? '' : `&type=${type}`}`)
             .then(response => response.json())
-            .then(data => this.setState({movies: data.Search}))
+            .then(data => this.setState({ movies: data.Search || [], isLoading: false}))
     }
 
-    // componentDidMount() {
-    //     const token = process.env.REACT_APP_OMDB_TOKEN
-
-    //     fetch(`http://www.omdbapi.com/?apikey=${token}&s=harry`)
-    //         .then(response => response.json())
-    //         .then(data => this.setState({movies: data.Search}))
-        
-    // }
-    
     render() {
-        const { movies } = this.state;
+        const { movies, isLoading } = this.state;
         return (
             <main className="container content" >
                 <Search fn_search={ this.fn_search_movies } />
                 {/* Добавили preloader если список фильмов не прогрузился */}
-                {movies.length ? <Movies movies={this.state.movies} /> : <Preloader />} 
+                { isLoading === false ? <Movies movies={movies} /> : <Preloader />} 
 
             </main>
         )

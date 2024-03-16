@@ -2,7 +2,6 @@ import { Movie } from './Movie'
 
 export function Movies(props) {
     const { movies } = props;
-    console.log(movies)
     return (
         <div className="movies">
             {movies.length ?

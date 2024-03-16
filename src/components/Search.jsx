@@ -1,79 +1,73 @@
-import React, { Component } from "react"
+import React, { useState } from "react"
 
-class Search extends Component {
-    state = {
-        search: '',
-        type_content: 'all'
 
-    }
+export function Search(props) {
+    // Если ничего не передано, то по умолчанию
+    // передаем прототип функции.
+    const { fn_search: fnSearch = Function.prototype} = props;
 
-    handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value });
-    }
-    handleKey = (event) => {
-        if (event.key === 'Enter') {
-            this.props.fn_search(this.state.search, this.state.type_content)
-        }
-    }
+    const [search, setSearch] = useState('');
+    const [type_content, setTypeContent] = useState('all');
 
-    render() {
-        return (
-            <div className="row">
-                <div className="input-field">
-                    <input
-                        className="validte"
-                        placeholder="search"
-                        type="search"
-                        name="search"
-                        value={this.state.search}
-                        onChange={this.handleChange}
-                        onKeyDown={this.handleKey}
-                    />
-                    <button
-                        className="btn search-btn"
-                        onClick={() => this.props.fn_search(this.state.search, this.state.type_content)}
-                    >
-                    Search
-                    </button>
-                </div>
-                <div>
-                    <label>
-                        <input 
-                            className="with-gap"
-                            name="type_content"
-                            type="radio"
-                            value="all"
-                            onChange={this.handleChange}
-                            checked={this.state.type_content === 'all'}
-                        />
-                        <span>All</span>
-                    </label>
-                    <label>
-                        <input 
-                            className="with-gap"
-                            name="type_content"
-                            type="radio"
-                            value="movie"
-                            onChange={this.handleChange}
-                            checked={this.state.type_content === 'movie'}
-                        />
-                        <span>Movie</span>
-                    </label>
-                    <label>
-                        <input 
-                            className="with-gap"
-                            name="type_content"
-                            type="radio"
-                            value="series"
-                            onChange={this.handleChange}
-                            checked={this.state.type_content === 'series'}
-                        />
-                        <span>Series</span>
-                    </label>
-                </div>
+    const updateSearch = (event) => setSearch(event.target.value);
+    const updateTypeContent = (event) => setTypeContent(event.target.value);
+    const sendSearch = (event) => { if (event.key === 'Enter') fnSearch(search, type_content) };
+
+
+    return (
+        <div className="row">
+            <div className="input-field">
+                <input
+                    className="validte"
+                    placeholder="search"
+                    type="search"
+                    name="search"
+                    value={search}
+                    onChange={updateSearch}
+                    onKeyDown={sendSearch}
+                />
+                <button
+                    className="btn search-btn"
+                    onClick={() => fnSearch(search, type_content)}
+                >
+                Search
+                </button>
             </div>
-        )
-    }
+            <div>
+                <label>
+                    <input 
+                        className="with-gap"
+                        name="type_content"
+                        type="radio"
+                        value="all"
+                        onChange={updateTypeContent}
+                        checked={type_content === 'all'}
+                    />
+                    <span>All</span>
+                </label>
+                <label>
+                    <input 
+                        className="with-gap"
+                        name="type_content"
+                        type="radio"
+                        value="movie"
+                        onChange={updateTypeContent}
+                        checked={type_content === 'movie'}
+                    />
+                    <span>Movie</span>
+                </label>
+                <label>
+                    <input 
+                        className="with-gap"
+                        name="type_content"
+                        type="radio"
+                        value="series"
+                        onChange={updateTypeContent}
+                        checked={type_content === 'series'}
+                    />
+                    <span>Series</span>
+                </label>
+            </div>
+        </div>
+    )
 }
-
-export { Search }
